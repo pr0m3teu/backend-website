@@ -26,7 +26,7 @@ export async function logMessage(message : string, fileName: string)
 
 function logReq(req: Request, res: Response, next: NextFunction)
 {
-    logMessage(`${req.method}\t${req.originalUrl}\t${req.headers.origin}`, "request-logs.txt");
+    logMessage(`${req.method}\t${req.originalUrl}\t${req.headers.origin}`, "request-logs.log");
     console.log(`${req.method}\t${req.path}`);
     next();
 }
