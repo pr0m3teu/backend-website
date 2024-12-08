@@ -5,12 +5,12 @@ const productSchema = new Schema({
     name: { type: String, required: true },
     price: { type: Number, required: true},
     rating: Number,
-    category: { type: String, required: false },
+    category: [{ type: String, required: false }],
     sizes: [{ type: String, required: true }],
     description: String,
 
     productId: {
-        type: 'UUID', 
+        type: 'UUID',
         required: true, 
         default: () => uuid()
     
