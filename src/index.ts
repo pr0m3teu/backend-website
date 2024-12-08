@@ -1,11 +1,12 @@
 import express, { Express, Request, Response } from "express";
+import logReq from "../middleware/logger";
 
 const PORT = process.env.PORT || 3000;
 
 const app : Express = express();
+app.use(logReq);
 
 app.get("/", (req: Request, res: Response) => {
-    console.log("Got Request!");
     res.send("Hello, World!").status(200);
 });
 
