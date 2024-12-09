@@ -7,7 +7,7 @@ import corsOptions from "../config/corsOptions";
 import logReq from "../middleware/logger";
 import errorHandler from "../middleware/errorHandler";
 import dbConnect from "../config/dbConnect";
-import productsRouter from "../routes/products";
+import productsRouter from "../routes/productsRouter";
 
 // Configuring enviroment variables
 dotenv.config();
@@ -18,6 +18,8 @@ if (!db) {
     console.error("ERROR: Could not find database URI! Exiting application...");
     process.exit(1);
 }
+// Connecting to database
+dbConnect(db);
 
 const app : Express = express();
 
@@ -27,13 +29,11 @@ app.use(logReq);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// Connecting to database
-dbConnect(db);
-
 // Routes
 app.get("/", (req: Request, res: Response) => {
     res.send("Hello, World!").status(200);
 });
+
 app.use("/products", productsRouter);
 
 app.use(errorHandler);

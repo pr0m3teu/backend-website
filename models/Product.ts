@@ -1,7 +1,8 @@
 import mongoose, { Schema } from "mongoose";
 import {v4 as uuid} from "uuid";
+import { ProductInterface } from "../interfaces";
 
-const productSchema = new Schema({
+const productSchema = new Schema<ProductInterface>({
     name: { type: String, required: true },
     price: { type: Number, required: true},
     rating: Number,
@@ -23,6 +24,6 @@ const productSchema = new Schema({
     },
 });
 
-const Product = mongoose.model("Product", productSchema);
+const Product = mongoose.model<ProductInterface>("Product", productSchema);
 
 export default Product;
