@@ -36,9 +36,12 @@ productsRouter.get("/:id", async (req: Request, res: Response, next: NextFunctio
 });
 
 // POST
-productsRouter.post("/new-product", async (req: Request, res: Response, next: NextFunction) =>{
-     const { name, price, rating, category, sizes, stock, description } = req.body;
+productsRouter.post("/", async (req: Request, res: Response, next: NextFunction) =>{
+     const { name, price, rating, category, sizes, stock, description } : ProductInterface = req.body;
      try {
+          if (!name || price ) {
+               res.status(400).json({ message : "New Product must have 'name' and 'price' attribute" });
+          }
           const result = await Product.insertMany([{ name, price, rating, category, sizes, stock, description}], { rawResult: true});
           console.log(result);
           res.status(200).json({message: "Succesfully added new product"});
@@ -50,6 +53,24 @@ productsRouter.post("/new-product", async (req: Request, res: Response, next: Ne
           next(err);
      }
 
+});
+
+// PUT
+
+productsRouter.put("/:id", async (req: Request, res: Response, next: NextFunction) => {
+     const id = req?.params.id;
+     const updateFields: ProductInterface = req?.body;
+     try {
+          const product = await Product.findByIdAndUpdate(id, updateFields);
+          console.log(product);
+          res.status(200).json(product);
+     }
+     catch (err : any)
+     {
+          console.error(err);
+          res.status(503).json({message: err.message});
+          next(err);
+     }
 });
 
 export default productsRouter;

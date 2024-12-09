@@ -1,8 +1,6 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import mongoose from "mongoose";
-
 import corsOptions from "../config/corsOptions";
 import logReq from "../middleware/logger";
 import errorHandler from "../middleware/errorHandler";
@@ -35,6 +33,10 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/products", productsRouter);
+
+app.all("*", (req: Request, res: Response) => {
+    res.status(404).json({ message: "404 Page not found!" });
+});
 
 app.use(errorHandler);
 

@@ -9,19 +9,19 @@ const productSchema = new Schema<ProductInterface>({
     category: [{ type: String, required: false }],
     sizes: [{ type: String, required: true }],
     description: String,
-
+    stock: {
+        type: Number,
+        required: true,
+        default: 0,
+    },
+    
     productId: {
         type: 'UUID',
         required: true, 
         default: () => uuid()
     
     },
-    
-    stock: {
-        type: Number,
-        required: true,
-        default: 0,
-    },
+
 });
 
 const Product = mongoose.model<ProductInterface>("Product", productSchema);
