@@ -1,20 +1,20 @@
 import { UUIDTypes } from "uuid";
 
 export interface ProductInterface {
-    name : String,
+    name : string,
     price : Number,
     rating? : Number,
-    category? : [String],
-    sizes : [String],
-    description? : String,
+    category? : [string],
+    sizes : [string],
+    description? : string,
     stock: Number,
     productId: UUIDTypes | any
 };
 
 export interface UserInterface {
-    username: String,
-    password: String,
+    username: string,
+    password: string,
     dateCreatedAt: Date,
-    firstName: String,
-    lastName: String
+    firstName: string,
+    lastName: string
 };

@@ -48,7 +48,7 @@ productsRouter.post("/", async (req: Request, res: Response, next: NextFunction)
           
           const result = await Product.insertMany([{ name, price, rating, category, sizes, stock, description}], { rawResult: true});
           console.log(result);
-          res.status(200).json({message: "Succesfully added new product"});
+          res.status(201).json({message: "Succesfully added new product"});
      }
      catch (err: any)
      {
