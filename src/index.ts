@@ -6,6 +6,7 @@ import logReq from "../middleware/logger";
 import errorHandler from "../middleware/errorHandler";
 import dbConnect from "../config/dbConnect";
 import productsRouter from "../routes/productsRouter";
+import userRouter from "../routes/usersRouters";
 
 // Configuring enviroment variables
 dotenv.config();
@@ -33,6 +34,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/products", productsRouter);
+app.use("/users", userRouter);
 
 app.all("*", (req: Request, res: Response) => {
     res.status(404).json({ message: "404 Page not found!" });

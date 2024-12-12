@@ -10,3 +10,11 @@ export interface ProductInterface {
     stock: Number,
     productId: UUIDTypes | any
 };
+
+export interface UserInterface {
+    username: String,
+    password: String,
+    dateCreatedAt: Date,
+    firstName: String,
+    lastName: String
+};

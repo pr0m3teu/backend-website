@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import Product from "../models/Product";
 import { Response, Request, Router, NextFunction} from "express";
 import { ProductInterface } from "../interfaces";
