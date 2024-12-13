@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import dbConnect from "./dbConnect";
+import { dbConnect, closeDBConnection} from "./dbConnect";
 import Product from "../models/Product";
 import User from "../models/User";
 import dotenv from "dotenv";
@@ -82,3 +82,4 @@ async function seedDb()
 }
 
 seedDb();
+closeDBConnection();

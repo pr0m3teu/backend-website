@@ -45,10 +45,11 @@ productsRouter.post("/", async (req: Request, res: Response, next: NextFunction)
                res.status(400).json({ message : "New product must have all fields defined!" });
                return;
           }
-          
-          const result = await Product.insertMany([{ name, price, rating, category, sizes, stock, description}], { rawResult: true});
-          console.log(result);
-          res.status(200).json({message: "Succesfully added new product"});
+          const newProduct = new Product({ name, price, rating, category, sizes, stock, description });
+          //const result = await Product.insertMany([{ name, price, rating, category, sizes, stock, description}], { rawResult: true});
+          //console.log(result);
+          await newProduct.save();
+          res.status(201).json({message: "Succesfully added new product"});
      }
      catch (err: any)
      {
