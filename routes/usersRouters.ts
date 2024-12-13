@@ -2,6 +2,7 @@ import User from "../models/User";
 import { UserInterface } from "../interfaces";
 import { Router, Response, Request, NextFunction } from "express";
 import { hashSync } from "bcryptjs";
+import mongoose, { Schema } from "mongoose";
 
 const userRouter: Router = Router();
 // GET
@@ -24,7 +25,7 @@ userRouter.get("/", async(req: Request, res: Response, next: NextFunction) => {
 
 userRouter.get("/:id", async(req: Request, res: Response, next: NextFunction) => {
     try {
-        const user : UserInterface | null = await User.findById(req.params.id).lean().exec();
+        const user = await User.findById(req.params.id).lean().exec();
         if (!user) {
             res.status(404).json({ message: "User not found" });
             return;
@@ -45,7 +46,7 @@ userRouter.post("/", async(req: Request, res: Response, next: NextFunction) => {
         return;
     }
 
-    const user : UserInterface | null = await User.findOne({ username: newUser.username }).lean().exec();
+    const user = await User.findOne({ username: newUser.username }).lean().exec();
     if (user) {
         res.status(400).json({ message: "Username already in use"});
         return;

@@ -1,6 +1,5 @@
 import mongoose, {Schema} from "mongoose";
 import { UserInterface } from "../interfaces";
-import Address from "./Address";
 
 const userSchema = new Schema<UserInterface>({
     username: { type: String, required: true, unique: true },

@@ -6,7 +6,7 @@ const productsRouter: Router = Router();
 // GET
 productsRouter.get("/", async (req: Request, res: Response, next: NextFunction) => {
      try {
-          const products: ProductInterface[] = await Product.find({}).lean();
+          const products = await Product.find({}).lean();
           res.status(200).json(products);
      } 
      catch (err : any)
