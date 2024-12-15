@@ -39,16 +39,17 @@ productsRouter.get("/:id", async (req: Request, res: Response, next: NextFunctio
 
 // POST
 productsRouter.post("/", async (req: Request, res: Response, next: NextFunction) =>{
-     const { name, price, rating, category, sizes, stock, description } : ProductInterface = req?.body;
+     const product: ProductInterface = req?.body;
+     const { name, price, rating, category, sizes, stock, description } = product;
      try {
-          if (!name || !price || !sizes || !description || !stock || !category) {
+          if (!name || !price || !sizes || !description || !stock || !category || !product) {
                res.status(400).json({ message : "New product must have all fields defined!" });
                return;
           }
           
-          const result = await Product.insertMany([{ name, price, rating, category, sizes, stock, description}], { rawResult: true});
-          console.log(result);
-          res.status(201).json({message: "Succesfully added new product"});
+          const savedProduct = await Product.create(product);
+          console.log(savedProduct);
+          res.status(201).json({message: "Succesfully added new product", product: savedProduct});
      }
      catch (err: any)
      {
