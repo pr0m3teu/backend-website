@@ -6,7 +6,7 @@ const productsRouter: Router = Router();
 // GET
 productsRouter.get("/", async (req: Request, res: Response, next: NextFunction) => {
      try {
-          const products: ProductInterface[] = await Product.find({}).lean();
+          const products = await Product.find({}).lean();
           res.status(200).json(products);
      } 
      catch (err : any)
@@ -23,7 +23,7 @@ productsRouter.get("/:id", async (req: Request, res: Response, next: NextFunctio
           const product = await Product.findOne({_id: id }).lean();
           if (!product)
           {
-               res.status(400).json({ message: `Product ${id} does not exits!` });
+               res.status(404).json({ message: `Product ${id} does not exits!` });
                return;
           }
 
@@ -39,17 +39,17 @@ productsRouter.get("/:id", async (req: Request, res: Response, next: NextFunctio
 
 // POST
 productsRouter.post("/", async (req: Request, res: Response, next: NextFunction) =>{
-     const { name, price, rating, category, sizes, stock, description } : ProductInterface = req?.body;
+     const product: ProductInterface = req?.body;
+     const { name, price, rating, category, sizes, stock, description } = product;
      try {
-          if (!name || !price || !sizes || !description || !stock || !category) {
+          if (!name || !price || !sizes || !description || !stock || !category || !product) {
                res.status(400).json({ message : "New product must have all fields defined!" });
                return;
           }
-          const newProduct = new Product({ name, price, rating, category, sizes, stock, description });
-          //const result = await Product.insertMany([{ name, price, rating, category, sizes, stock, description}], { rawResult: true});
-          //console.log(result);
-          await newProduct.save();
-          res.status(201).json({message: "Succesfully added new product"});
+          
+          const savedProduct = await Product.create(product);
+          console.log(savedProduct);
+          res.status(201).json({message: "Succesfully added new product", product: savedProduct});
      }
      catch (err: any)
      {
@@ -61,7 +61,6 @@ productsRouter.post("/", async (req: Request, res: Response, next: NextFunction)
 });
 
 // PUT
-
 productsRouter.put("/:id", async (req: Request, res: Response, next: NextFunction) => {
      const id = req?.params.id;
      const updateFields: ProductInterface = req?.body;
@@ -69,7 +68,7 @@ productsRouter.put("/:id", async (req: Request, res: Response, next: NextFunctio
           const product = await Product.findByIdAndUpdate(id, updateFields).lean();
           if (!product)
           {
-               res.status(400).json({ message: `Product ${id} does not exits!` });
+               res.status(404).json({ message: `Product ${id} does not exits!` });
                return;
           }
           console.log(product);
@@ -92,7 +91,7 @@ productsRouter.delete("/:id", async(req: Request, res: Response, next: NextFunct
           
           if (deletedCount == 0)
           {
-               res.status(400).json({ message: `Product ${id} does not exits!` });
+               res.status(404).json({ message: `Product ${id} does not exits!` });
                return;
           }
           res.status(200).json({ message : `Product ${id} deleted!`});

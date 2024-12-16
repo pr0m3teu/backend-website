@@ -1,20 +1,34 @@
 import { UUIDTypes } from "uuid";
+import { Document, Schema } from "mongoose";
 
-export interface ProductInterface {
-    name : String,
+
+export interface ProductInterface extends Document {
+    name : string,
     price : Number,
     rating? : Number,
-    category? : [String],
-    sizes : [String],
-    description? : String,
+    category? : [string],
+    sizes : [string],
+    description? : string,
     stock: Number,
     productId: UUIDTypes | any
 };
 
-export interface UserInterface {
-    username: String,
-    password: String,
+export interface UserInterface extends Document {
+    password: string,
+    firstName: string,
+    lastName: string,
+    email: string,
+    admin: boolean,
     dateCreatedAt: Date,
-    firstName: String,
-    lastName: String
+};
+
+export interface AddressInterface extends Document {
+    city: string,
+    street: string,
+    houseNumber: string | number,
+    country: string,
+    postalCode: number,
+    phoneNumber: string,
+    user: Schema.Types.ObjectId,
+    dateCreatedAt: Date,  
 };
