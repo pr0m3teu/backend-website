@@ -41,16 +41,16 @@ userRouter.get("/:id", async(req: Request, res: Response, next: NextFunction) =>
 // POST
 userRouter.post("/", async(req: Request, res: Response, next: NextFunction) => {
     const newUser : UserInterface = req?.body;
-    const {username, password, firstName, lastName, email} = newUser;
+    const {password, firstName, lastName, email} = newUser;
 
-    if (!newUser || !username || !password || !firstName || !lastName || !email) {
+    if (!newUser || !password || !firstName || !lastName || !email) {
         res.status(400).json({message : "All fields are required" });
         return;
     }
 
-    const user = await User.findOne({ username }).lean().exec();
+    const user = await User.findOne({ email }).lean().exec();
     if (user) {
-        res.status(400).json({ message: "Username already in use"});
+        res.status(400).json({ message: "Email already in use"});
         return;
     }
 
@@ -59,8 +59,8 @@ userRouter.post("/", async(req: Request, res: Response, next: NextFunction) => {
         return;
     }
 
-    if (username.length < 5 || password.length > 25) {
-        res.status(400).json({ message: "Username must be between 5 and 25 charachters long"});
+    if (email.length < 3) {
+        res.status(400).json({ message: "Email must be between at least 3 long"});
         return;
     }
 
@@ -79,6 +79,42 @@ userRouter.post("/", async(req: Request, res: Response, next: NextFunction) => {
         next(err);
     }
     
+});
+
+// PUT
+userRouter.put("/:id", async(req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.id;
+    const updateFields: UserInterface = req?.body;  
+    try {
+        const user = await User.findByIdAndUpdate(updateFields);
+        if (!user) {
+            res.status(404).json({ message: `User ${id} does not exist`});
+            return;
+        }
+
+        res.status(200).json({user});
+    } catch (err : any) {
+        res.status(500).json({ message: err.message });
+        next(err);
+    }
+});
+
+// DELETE
+userRouter.delete("/:id", async(req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.id;
+    try {
+        const { deletedCount } = await User.deleteOne({_id: id }).lean();
+        if (deletedCount == 0)
+        {
+            res.status(404).json({ message: `User ${id} does not exits`});
+            return;
+        }
+
+        res.status(200).json({ message : "Succesfully deleted user" });
+        
+    } catch (err : any) {
+        res.status(500).json({ message : err.message });
+    }
 });
 
 

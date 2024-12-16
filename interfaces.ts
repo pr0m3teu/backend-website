@@ -14,11 +14,11 @@ export interface ProductInterface extends Document {
 };
 
 export interface UserInterface extends Document {
-    username: string,
     password: string,
     firstName: string,
     lastName: string,
     email: string,
+    admin: boolean,
     dateCreatedAt: Date,
 };
 
@@ -28,6 +28,7 @@ export interface AddressInterface extends Document {
     houseNumber: string | number,
     country: string,
     postalCode: number,
+    phoneNumber: string,
     user: Schema.Types.ObjectId,
     dateCreatedAt: Date,  
 };
