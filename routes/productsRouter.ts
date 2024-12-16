@@ -1,107 +1,15 @@
-import Product from "../models/Product";
-import { Response, Request, Router, NextFunction} from "express";
-import { ProductInterface } from "../interfaces";
+import { Router } from "express";
+import { createNewProduct, deleteProduct, getAllProducts, getProductById, updateProduct } from "../controllers/productControllers";
 
 const productsRouter: Router = Router();
 // GET
-productsRouter.get("/", async (req: Request, res: Response, next: NextFunction) => {
-     try {
-          const products = await Product.find({}).lean();
-          res.status(200).json(products);
-     } 
-     catch (err : any)
-     {
-          console.error(err);
-          res.status(503).json({message: err.message});
-          next(err);
-     }   
-});
-
-productsRouter.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
-     try {
-          const id = req.params.id;
-          const product = await Product.findOne({_id: id }).lean();
-          if (!product)
-          {
-               res.status(404).json({ message: `Product ${id} does not exits!` });
-               return;
-          }
-
-          res.status(200).json(product);
-     }
-     catch (err : any)
-     {
-          console.error(err);
-          res.statusCode = 503;
-          next(err);
-     }
-});
-
+productsRouter.get("/", getAllProducts);
+productsRouter.get("/:id", getProductById);
 // POST
-productsRouter.post("/", async (req: Request, res: Response, next: NextFunction) =>{
-     const product: ProductInterface = req?.body;
-     const { name, price, rating, category, sizes, stock, description } = product;
-     try {
-          if (!name || !price || !sizes || !description || !stock || !category || !product) {
-               res.status(400).json({ message : "New product must have all fields defined!" });
-               return;
-          }
-          
-          const savedProduct = await Product.create(product);
-          console.log(savedProduct);
-          res.status(201).json({message: "Succesfully added new product", product: savedProduct});
-     }
-     catch (err: any)
-     {
-          console.error(err);
-          res.status(503).json({message: err.message});
-          next(err);
-     }
-
-});
-
+productsRouter.post("/", createNewProduct);
 // PUT
-productsRouter.put("/:id", async (req: Request, res: Response, next: NextFunction) => {
-     const id = req?.params.id;
-     const updateFields: ProductInterface = req?.body;
-     try {
-          const product = await Product.findByIdAndUpdate(id, updateFields).lean();
-          if (!product)
-          {
-               res.status(404).json({ message: `Product ${id} does not exits!` });
-               return;
-          }
-          console.log(product);
-          res.status(200).json(product);
-     }
-     catch (err : any)
-     {
-          console.error(err);
-          res.status(503).json({message: err.message});
-          next(err);
-     }
-});
-
-
+productsRouter.put("/:id", updateProduct);
 // DELETE
-productsRouter.delete("/:id", async(req: Request, res: Response, next: NextFunction) => {
-     const id = req.params.id;
-     try {
-          const { deletedCount } = await Product.deleteOne({_id: id }).lean();
-          
-          if (deletedCount == 0)
-          {
-               res.status(404).json({ message: `Product ${id} does not exits!` });
-               return;
-          }
-          res.status(200).json({ message : `Product ${id} deleted!`});
-     }
-     catch (err: any)
-     {
-          console.error(err);
-          res.status(503).json({ message: err.message });
-          next(err);
-     }
-});
+productsRouter.delete("/:id", deleteProduct);
 
 export default productsRouter;

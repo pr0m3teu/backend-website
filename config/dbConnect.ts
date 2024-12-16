@@ -6,7 +6,7 @@ async function dbConnect(db_uri : string)
         await mongoose.connect(db_uri);
     }
     catch (err : any) {
-        console.error("Error connecting to database: ",err.message);
+        console.error("Error connecting to database: ", err.message);
         process.exit(1);    
     }
 }
