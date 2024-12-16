@@ -8,7 +8,10 @@ const userSchema = new Schema<UserInterface>({
     lastName: { type: String, required: true },
     
     admin: {type: Boolean, required: true, default: false },
-    dateCreatedAt: {type: Date, required: true, default: new Date()},
+
+}, 
+{ 
+    timestamps: true 
 });
 
 const User = mongoose.model<UserInterface>("User", userSchema);

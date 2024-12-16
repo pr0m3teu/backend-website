@@ -22,6 +22,9 @@ const productSchema = new Schema<ProductInterface>({
     
     },
 
+},
+{
+    timestamps: true
 });
 
 const Product = mongoose.model<ProductInterface>("Product", productSchema);

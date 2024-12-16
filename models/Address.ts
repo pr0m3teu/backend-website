@@ -14,7 +14,9 @@ const addressSchema = new Schema<AddressInterface>({
         required: true
     },
     
-    dateCreatedAt: {type: Date, required: true, default: new Date()},
+},
+{
+    timestamps: true
 });
 
 const Address = mongoose.model<AddressInterface>("Address", addressSchema);
