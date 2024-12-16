@@ -1,20 +1,18 @@
-import mongoose from "mongoose";
 import { dbConnect, closeDBConnection} from "./dbConnect";
 import Product from "../models/Product";
 import User from "../models/User";
 import dotenv from "dotenv";
+import Address from "../models/Address";
+import mongoose from "mongoose";
 
 dotenv.config();
-dbConnect(process.env.DB_URI!);
-
-async function seedDb()
+export async function seedDb()
 {
     try {
         let result : any = await Product.deleteMany({}).lean();
         console.log(result);
         result = await User.deleteMany({}).lean();
         console.log(result);
-
         console.log("Cleared Database!");
 
         result = await Product.insertMany([
@@ -58,28 +56,27 @@ async function seedDb()
         ]);
         console.log("Added Test Products");
         
-        result = User.insertMany([
+        result = await User.insertMany([
             {
-                username: "andrei123",
+                email: "andrei@gmail.com",
                 password: "mihai123",
                 firstName: "Andrei",
-                lastName: "Mihai"
+                lastName: "Mihai",
+                admin: true
             },
             {
-                username: "johndoe34",
+                email: "johndoe34@gmail.com",
                 password: "fsdf1223",
                 firstName: "John",
-                lastName: "Doe"
+                lastName: "Doe",
+                admin: false
             }
         ]);
+        console.log(result);
         console.log("Added Test Users");
 
-         
     } catch (err) {
         console.error(err);
     }
-    
 }
-
 seedDb();
-closeDBConnection();

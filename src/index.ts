@@ -7,18 +7,12 @@ import errorHandler from "../middleware/errorHandler";
 import { dbConnect, closeDBConnection} from "../config/dbConnect";
 import productsRouter from "../routes/productsRouter";
 import userRouter from "../routes/usersRouters";
-
+import { seedDb }from "../config/seedDb";
 // Configuring enviroment variables
 dotenv.config();
 const PORT = process.env.PORT || 3000;
 
-const dbLink: string | undefined = process.env.DB_URI;
-if (!dbLink) {
-    console.error("ERROR: Could not find database URI! Exiting application...");
-    process.exit(1);
-}
-// Connecting to database
-dbConnect(dbLink);
+
 
 // Closing database when server stops  
 process.on('SIGINT', async () => {
@@ -47,5 +41,15 @@ app.all("*", (req: Request, res: Response) => {
 
 app.use(errorHandler);
 
-app.listen(PORT, () => {console.log(`Server is listening on port: ${PORT}`)});
+app.listen(PORT, () => {
+    // Connecting to database
+    const dbLink: string | undefined = process.env.DB_URI;
+    if (!dbLink) {
+        console.error("ERROR: Could not find database URI! Exiting application...");
+        process.exit(1);
+    }
+    dbConnect(dbLink);
+    seedDb();
+    console.log(`Server is listening on port: ${PORT}`);
+});
 
