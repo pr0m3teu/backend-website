@@ -4,7 +4,7 @@ import cors from "cors";
 import corsOptions from "../config/corsOptions";
 import logReq from "../middleware/logger";
 import errorHandler from "../middleware/errorHandler";
-import dbConnect from "../config/dbConnect";
+import { dbConnect, closeDBConnection} from "../config/dbConnect";
 import productsRouter from "../routes/productsRouter";
 import userRouter from "../routes/usersRouters";
 
@@ -12,17 +12,22 @@ import userRouter from "../routes/usersRouters";
 dotenv.config();
 const PORT = process.env.PORT || 3000;
 
-const db: string | undefined = process.env.DB_URI;
-if (!db) {
+const dbLink: string | undefined = process.env.DB_URI;
+if (!dbLink) {
     console.error("ERROR: Could not find database URI! Exiting application...");
     process.exit(1);
 }
 // Connecting to database
-dbConnect(db);
+dbConnect(dbLink);
 
-const app : Express = express();
+// Closing database when server stops  
+process.on('SIGINT', async () => {
+    await closeDBConnection();
+    process.exit(0);
+});
 
 // Middleware
+const app : Express = express();
 app.use(cors(corsOptions));
 app.use(logReq);
 app.use(express.json());
