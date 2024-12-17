@@ -1,9 +1,6 @@
-import { dbConnect, closeDBConnection} from "./dbConnect";
 import Product from "../models/Product";
 import User from "../models/User";
 import dotenv from "dotenv";
-import Address from "../models/Address";
-import mongoose from "mongoose";
 
 dotenv.config();
 export async function seedDb()
@@ -79,4 +76,3 @@ export async function seedDb()
         console.error(err);
     }
 }
-seedDb();

@@ -49,7 +49,10 @@ app.listen(PORT, () => {
         process.exit(1);
     }
     dbConnect(dbLink);
-    seedDb();
+
+    if (process.env.ENVIRONMENT === "dev" && process.env.SEED_DB === "true") {
+        seedDb();
+    }
     console.log(`Server is listening on port: ${PORT}`);
 });
 

@@ -3,7 +3,8 @@ import User from "../models/User";
 import { UserInterface } from "../interfaces";
 import Address from "../models/Address";
 import { AddressInterface } from "../interfaces";
-import { hashSync } from "bcryptjs";
+
+import bcryptjs from "bcryptjs";
 
 
 export async function getAllUsers(req: Request, res: Response, next: NextFunction)
@@ -56,7 +57,7 @@ export async function createNewUser(req: Request, res: Response, next: NextFunct
     const {password, firstName, lastName, email} = newUser;
 
     if (!newUser || !password || !firstName || !lastName || !email) {
-        res.status(400).json({message : "All fields are required" });
+        res.status(400).json({ message : "All fields are required" });
         return;
     }
 
@@ -76,7 +77,7 @@ export async function createNewUser(req: Request, res: Response, next: NextFunct
         return;
     }
 
-    newUser.password = hashSync(password, 10);
+    newUser.password = await bcryptjs.hash(password, 10);
     try {
         const savedUser = await User.create(newUser);
         if (!savedUser) {
