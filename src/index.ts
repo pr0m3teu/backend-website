@@ -53,7 +53,7 @@ app.listen(PORT, () => {
         process.exit(1);
     }
     dbConnect(dbLink);
-    seedDb();
+    // seedDb();
     console.log(`Server is listening on port: ${PORT}`);
 });
 
