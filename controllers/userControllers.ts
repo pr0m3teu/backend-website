@@ -5,7 +5,7 @@ import Address from "../models/Address";
 import { AddressInterface } from "../interfaces";
 import { hashSync } from "bcryptjs";
 
-
+// STOP sending all the information about a user i.e password
 export async function getAllUsers(req: Request, res: Response, next: NextFunction)
 {
     try {

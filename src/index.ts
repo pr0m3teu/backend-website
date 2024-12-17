@@ -7,7 +7,9 @@ import errorHandler from "../middleware/errorHandler";
 import { dbConnect, closeDBConnection} from "../config/dbConnect";
 import productsRouter from "../routes/productsRouter";
 import userRouter from "../routes/usersRouters";
-import { seedDb }from "../config/seedDb";
+import { seedDb } from "../config/seedDb";
+import cookieParser from "cookie-parser";
+import authRouter from "../routes/authRouter";
 // Configuring enviroment variables
 dotenv.config();
 const PORT = process.env.PORT || 3000;
@@ -24,6 +26,7 @@ process.on('SIGINT', async () => {
 const app : Express = express();
 app.use(cors(corsOptions));
 app.use(logReq);
+app.use(cookieParser())
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -34,6 +37,7 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use("/products", productsRouter);
 app.use("/users", userRouter);
+app.use("/auth", authRouter);
 
 app.all("*", (req: Request, res: Response) => {
     res.status(404).json({ message: "404 Page not found!" });

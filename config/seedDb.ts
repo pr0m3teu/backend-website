@@ -2,6 +2,7 @@ import { dbConnect, closeDBConnection} from "./dbConnect";
 import Product from "../models/Product";
 import User from "../models/User";
 import dotenv from "dotenv";
+import bcryptjs from "bcryptjs";
 import Address from "../models/Address";
 import mongoose from "mongoose";
 
@@ -59,14 +60,14 @@ export async function seedDb()
         result = await User.insertMany([
             {
                 email: "andrei@gmail.com",
-                password: "mihai123",
+                password: await bcryptjs.hash("mihai123", 10),
                 firstName: "Andrei",
                 lastName: "Mihai",
                 admin: true
             },
             {
                 email: "johndoe34@gmail.com",
-                password: "fsdf1223",
+                password: await bcryptjs.hash("fsdf1223", 10),
                 firstName: "John",
                 lastName: "Doe",
                 admin: false
@@ -79,4 +80,4 @@ export async function seedDb()
         console.error(err);
     }
 }
-seedDb();
+
