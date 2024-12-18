@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 async function dbConnect(db_uri : string)
 {
     try {
-        const conn = await mongoose.connect(db_uri, { serverSelectionTimeoutMS: 10000 });
+      await mongoose.connect(db_uri, { serverSelectionTimeoutMS: 10000 });
     }
     catch (err : any) {
         console.error("Error connecting to database: ", err.message);
