@@ -40,14 +40,6 @@ export async function login(req: Request, res: Response, next: NextFunction) {
     }
 
     try {
-        // Chech if .env contains the token secrets
-        if (!process.env.ACCESS_TOKEN_SECRET) {
-            throw new Error("There is no access token for loging in users!");
-        } 
-        else if (!process.env.REFRESH_TOKEN_SECRET) {
-            throw new Error("There is not refresh token for loging in users!");
-        }
-
         const user = await User.findOne({ email }).lean().exec();
         if (!user) {
             res.status(401).json({ message: "Unauthorized" });
@@ -85,21 +77,18 @@ export async function refresh(req: Request, res: Response, next: NextFunction) {
     const cookies = req.cookies;
     if (!cookies?.jwt) {
         res.sendStatus(401);
+        return;
     }
 
-    try {
-        // Chech if .env contains the token secrets
-        if (!process.env.ACCESS_TOKEN_SECRET) {
-            throw new Error("There is no access token for loging in users!");
-        } 
-        else if (!process.env.REFRESH_TOKEN_SECRET) {
+    try { 
+        if (!process.env.REFRESH_TOKEN_SECRET) {
             throw new Error("There is not refresh token for loging in users!");
         }
 
         const refreshToken = cookies.jwt;
         jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, async (err : any, user : any) => {
             if (err) {
-                res.sendStatus(403);
+                res.status(403).json({ message : "Refresh token expired, log in again" });
                 next(err);
             }
 
@@ -107,6 +96,7 @@ export async function refresh(req: Request, res: Response, next: NextFunction) {
             if (!foundUser) 
             {
                 res.sendStatus(401);
+                return;
             }
             
             const newAccessToken = generateToken({ email: foundUser?.email!, admin: foundUser?.admin!}, "1h");
@@ -115,10 +105,19 @@ export async function refresh(req: Request, res: Response, next: NextFunction) {
     
     } catch (err: any) {
         res.status(500).json({ message: err.message });
+        next(err);
     }
 }
 
 export async function logout(req: Request, res: Response, next: NextFunction) {
-    res.status(404);
+    const cookies = req.cookies;
+
+    if (!cookies?.jwt) {
+        res.sendStatus(204);
+        return;
+    }
+
+    res.clearCookie('jwt', { httpOnly: true, secure: true, sameSite: "none" });
+    res.json({ message: "Cookie cleared" });
 }
 

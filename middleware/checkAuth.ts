@@ -9,6 +9,11 @@ async function checkAuth(req: Request, res: Response, next: NextFunction)
         return;
     }
 
+    if(!authHeader?.startsWith("Bearer ")) {
+        res.status(401).json({ message: "Missing 'Authorization' header" });
+        return;
+    }
+
     const token = authHeader && authHeader.split(" ")[1]; // Get token 
     if (!token) { 
         res.status(401).json({ message: "Missing 'Authorization' header" });
