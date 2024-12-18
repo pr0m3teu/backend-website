@@ -19,12 +19,4 @@ async function closeDBConnection() {
     }
 }
 
-mongoose.connection.once('open', () => {
-  console.log('MongoDB connection established');
-});
-
-mongoose.connection.on('error', (err) => {
-  console.error('MongoDB connection error:', err);
-});
-
 export  { dbConnect , closeDBConnection };
