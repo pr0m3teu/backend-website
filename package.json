@@ -4,7 +4,7 @@
   "description": "Backend for e-comerce website",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --silent",
     "build": "npx tsc",
     "seedDB": "node config/seedDb.js",
     "dev": "nodemon ./src/index.js"
