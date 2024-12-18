@@ -1,9 +1,10 @@
 import { Router } from "express";
 import { createNewUser, createUserAddress, deleteUser, deleteUserAddress, getAllUserAddresses, getAllUsers, getUserById, updateUser, updateUserAddress } from "../controllers/userControllers";
+import checkAuth from "../middleware/checkAuth";
 
 const userRouter: Router = Router();
 // GET
-userRouter.get("/", getAllUsers);
+userRouter.get("/", checkAuth, getAllUsers);
 userRouter.get("/:id", getUserById);
 
 // Get all addresses from user

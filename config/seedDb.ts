@@ -1,6 +1,7 @@
 import Product from "../models/Product";
 import User from "../models/User";
 import dotenv from "dotenv";
+import bcryptjs from "bcryptjs";
 
 dotenv.config();
 export async function seedDb()
@@ -56,14 +57,14 @@ export async function seedDb()
         result = await User.insertMany([
             {
                 email: "andrei@gmail.com",
-                password: "mihai123",
+                password: await bcryptjs.hash("mihai123", 10),
                 firstName: "Andrei",
                 lastName: "Mihai",
                 admin: true
             },
             {
                 email: "johndoe34@gmail.com",
-                password: "fsdf1223",
+                password: await bcryptjs.hash("fsdf1223", 10),
                 firstName: "John",
                 lastName: "Doe",
                 admin: false

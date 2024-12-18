@@ -6,9 +6,19 @@ import { AddressInterface } from "../interfaces";
 
 import bcryptjs from "bcryptjs";
 
-
+// STOP sending all the information about a user i.e password
 export async function getAllUsers(req: Request, res: Response, next: NextFunction)
 {
+    const loggedUser = req.user;
+    if (!loggedUser)  {
+        res.sendStatus(401);
+        return;
+    }
+    else if (!loggedUser?.UserInfo?.admin) {
+        res.sendStatus(403);
+        return;
+    }
+    
     try {
         const users : UserInterface[] | null = await User.find({});
         if (!users)
