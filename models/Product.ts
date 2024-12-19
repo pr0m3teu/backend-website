@@ -2,6 +2,7 @@ import mongoose, { Schema } from "mongoose";
 import {v4 as uuid} from "uuid";
 import { ProductInterface } from "../interfaces";
 
+// TODO: Add Images
 const productSchema = new Schema<ProductInterface>({
     name: { type: String, required: true },
     price: { type: Number, required: true},

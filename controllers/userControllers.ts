@@ -6,7 +6,7 @@ import { AddressInterface } from "../interfaces";
 
 import bcryptjs from "bcryptjs";
 
-// STOP sending all the information about a user i.e password
+// TODO: STOP sending all the information about a user i.e password
 export async function getAllUsers(req: Request, res: Response, next: NextFunction)
 {
     const loggedUser = req.user;
@@ -61,6 +61,7 @@ export async function getAllUserAddresses(req: Request, res: Response, next: Nex
     }
 }
 
+// TODO: Do more user info validation
 export async function createNewUser(req: Request, res: Response, next: NextFunction)
 {
     const newUser : UserInterface = req?.body;
@@ -103,6 +104,7 @@ export async function createNewUser(req: Request, res: Response, next: NextFunct
     }
 }
 
+// TODO: Do more address info validation
 export async function createUserAddress(req: Request, res: Response, next: NextFunction)
 {
     const id = req.params.id;
@@ -130,6 +132,7 @@ export async function createUserAddress(req: Request, res: Response, next: NextF
     }
 }
 
+// TODO: Do validation on updateFields
 export async function updateUser(req: Request, res: Response, next: NextFunction)
 {
     const id = req.params.id;
@@ -148,6 +151,7 @@ export async function updateUser(req: Request, res: Response, next: NextFunction
     }
 }
 
+// TODO: Add more updateFields validation
 export async function updateUserAddress(req: Request, res: Response, next: NextFunction)
 {
     const userId = req.params.userId;
@@ -183,6 +187,7 @@ export async function deleteUser(req: Request, res: Response, next: NextFunction
         
     } catch (err : any) {
         res.status(500).json({ message : err.message });
+        next(err);
     }
 }
 
@@ -206,6 +211,7 @@ export async function deleteUserAddress(req: Request, res: Response, next: NextF
 
     } catch (err : any) {
         res.status(500).json({ message : err.message});
+        next(err);
     }
 }
 

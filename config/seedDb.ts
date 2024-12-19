@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import bcryptjs from "bcryptjs";
 
 dotenv.config();
+// TODO: add more things to db
 export async function seedDb()
 {
     try {

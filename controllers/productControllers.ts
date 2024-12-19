@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import Product from "../models/Product";
 import { ProductInterface } from "../interfaces";
 
+// TODO: find way to send image data with request
 export async function getAllProducts(req: Request, res: Response, next: NextFunction)
 {
     try {
@@ -35,6 +36,7 @@ export async function getProductById(req: Request, res: Response, next: NextFunc
     }
 }
 
+// TODO: find way to store image data 
 export async function createNewProduct(req: Request, res: Response, next: NextFunction)
 {
     const product: ProductInterface = req?.body;
@@ -57,6 +59,7 @@ export async function createNewProduct(req: Request, res: Response, next: NextFu
      }
 }
 
+// TODO: add proper updateFields validation
 export async function updateProduct(req: Request, res: Response, next: NextFunction)
 {
     const id = req?.params.id;
