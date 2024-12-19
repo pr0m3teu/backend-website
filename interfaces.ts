@@ -32,3 +32,10 @@ export interface AddressInterface extends Document {
     user: Schema.Types.ObjectId,
     dateCreatedAt: Date,  
 };
+
+export interface OrderInterface extends Document {
+    userId: Schema.Types.ObjectId,
+    address: Schema.Types.ObjectId,
+    products: [Schema.Types.ObjectId],
+    fullfiled: boolean
+}

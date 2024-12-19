@@ -2,6 +2,7 @@ import mongoose, { Schema } from "mongoose";
 import {v4 as uuid} from "uuid";
 import { ProductInterface } from "../interfaces";
 
+// Should have Images
 const productSchema = new Schema<ProductInterface>({
     name: { type: String, required: true },
     price: { type: Number, required: true},
@@ -14,14 +15,6 @@ const productSchema = new Schema<ProductInterface>({
         required: true,
         default: 0,
     },
-    
-    productId: {
-        type: 'UUID',
-        required: true, 
-        default: () => uuid()
-    
-    },
-
 },
 {
     timestamps: true
