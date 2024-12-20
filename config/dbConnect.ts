@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+
 async function dbConnect(db_uri : string)
 {
     try {
@@ -19,4 +20,4 @@ async function closeDBConnection() {
     }
 }
 
-export  { dbConnect , closeDBConnection };
+export { dbConnect, closeDBConnection };
